@@ -1,8 +1,6 @@
-const env = require("./env");
+import env from "./env.js";
 
-const corsOptions = {
+export const corsOptions = {
   origin: env.corsOrigin.split(",").map((value) => value.trim()),
   credentials: true,
 };
-
-module.exports = corsOptions;

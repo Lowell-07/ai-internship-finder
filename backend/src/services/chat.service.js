@@ -1,5 +1,10 @@
-const { getState } = require("./state.service");
-const { createId } = require("../utils/id");
+import { ChatHistory } from "../models/chatHistory.model.js";
+import {
+  createStateSession,
+  getStateMessages,
+  addStateSession,
+} from "./state.service.js";
+import { createId } from "../utils/id.js";
 
 function generateReply(message) {
   const query = message.toLowerCase();
@@ -19,36 +24,47 @@ function generateReply(message) {
   return "The backend is currently returning deterministic demo guidance rather than a real RAG answer.";
 }
 
-function sendMessage(sessionId, message) {
-  const state = getState();
-  let session = state.chatSessions.find((item) => item.id === sessionId);
+async function sendMessage(sessionId, message) {
+  let session = getStateMessages(sessionId);
 
   if (!session) {
-    session = {
-      id: createId("session"),
-      title: message.slice(0, 30),
-      messages: [],
-      createdAt: new Date().toISOString(),
-    };
-    state.chatSessions.unshift(session);
+    session = createStateSession(sessionId, message.slice(0, 30));
+    addStateSession(session);
   }
 
-  session.messages.push({
+  const userMessage = {
     id: createId("message"),
     role: "user",
     content: message,
     timestamp: new Date().toISOString(),
+  };
+  session.messages.push(userMessage);
+
+  await ChatHistory.create({
+    id: userMessage.id,
+    userId: sessionId,
+    role: "user",
+    message: message,
+    timestamp: new Date(),
   });
 
+  const replyContent = generateReply(message);
   const reply = {
     id: createId("message"),
     role: "assistant",
-    content: generateReply(message),
+    content: replyContent,
     timestamp: new Date().toISOString(),
     confidence: 0.72,
   };
-
   session.messages.push(reply);
+
+  await ChatHistory.create({
+    id: reply.id,
+    userId: sessionId,
+    role: "assistant",
+    message: replyContent,
+    timestamp: new Date(),
+  });
 
   return {
     session_id: session.id,
@@ -56,16 +72,41 @@ function sendMessage(sessionId, message) {
   };
 }
 
-function getSessions() {
-  return { sessions: getState().chatSessions };
+async function getSessions() {
+  const histories = await ChatHistory.findAll({
+    attributes: ["userId"],
+    group: ["userId"],
+  });
+  return {
+    sessions: histories.map((h) => ({ id: h.userId, title: "Chat Session" })),
+  };
 }
 
-function getSession(sessionId) {
-  return getState().chatSessions.find((item) => item.id === sessionId) || null;
+async function getSession(sessionId) {
+  const history = await ChatHistory.findAll({
+    where: { userId: sessionId },
+    order: [["timestamp", "ASC"]],
+  });
+  if (!history || history.length === 0) return null;
+
+  return {
+    id: sessionId,
+    title: "Chat",
+    messages: history.map((item) => ({
+      id: item.id,
+      role: item.role,
+      content: item.message,
+      timestamp: item.timestamp,
+    })),
+  };
 }
 
-module.exports = {
-  sendMessage,
-  getSessions,
-  getSession,
-};
+async function getChatHistoryByUser(userId) {
+  const history = await ChatHistory.findAll({
+    where: { userId },
+    order: [["timestamp", "ASC"]],
+  });
+  return history.map((item) => item.get({ plain: true }));
+}
+
+export { sendMessage, getSessions, getSession, getChatHistoryByUser };

@@ -1,10 +1,10 @@
-const axios = require("axios");
+import axios from "axios";
 
 const httpClient = axios.create({
-  timeout: 5000,
+  timeout: 10000,
   headers: {
-    "User-Agent": "AI-Internship-Finder/1.0",
+    "Content-Type": "application/json",
   },
 });
 
-module.exports = httpClient;
+export default httpClient;

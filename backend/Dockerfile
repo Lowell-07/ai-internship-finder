@@ -1,14 +1,21 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS deps
 WORKDIR /app
-
-FROM base AS deps
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-FROM base AS runner
+FROM node:22-alpine AS runner
+WORKDIR /app
 ENV NODE_ENV=production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 backend
+
 COPY --from=deps /app/node_modules ./node_modules
-COPY src ./src
-COPY .env.example ./.env.example
+COPY . .
+
+USER backend
+
 EXPOSE 8000
-CMD ["node", "src/server.js"]
+ENV PORT=8000
+
+CMD ["npm", "start"]

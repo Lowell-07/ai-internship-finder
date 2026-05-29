@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "build": "node -e \"console.log('Backend build step not required for plain Node.js source.')\""
+    "build": "node -e \"console.log('Backend build step not required for plain Node.js source.')\"",
+    "lint": "eslint src/ || echo 'No ESLint setup yet'",
+    "format": "prettier --write src/"
   },
   "keywords": [
     "express",
@@ -22,7 +24,13 @@
     "express": "^5.2.1",
     "multer": "^2.0.2",
     "node-cron": "^4.2.1",
+    "pdf-parse": "^1.1.1",
     "pg": "^8.21.0",
     "sequelize": "^6.37.8"
+  },
+  "devDependencies": {
+    "eslint": "^10.4.0",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3"
   }
 }

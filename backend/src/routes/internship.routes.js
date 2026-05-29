@@ -1,29 +1,40 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   getInternships,
   getRecommendedInternships,
   toggleSaveInternship,
-  rateInternship,
-} = require("../services/internship.service");
+} from "../services/internship.service.js";
 
 const router = express.Router();
 
-router.get("/internships", (req, res) => {
-  res.json(getInternships(req.query, req.query.search || ""));
+router.get("/internships", async (req, res) => {
+  res.json(await getInternships(req.query, req.query.search || ""));
 });
 
-router.get("/internships/recommended", (_req, res) => {
-  res.json(getRecommendedInternships());
+router.post("/internships/recommended", async (req, res) => {
+  const {
+    resumeSkills,
+    resumeTechnologies,
+    resumeDomains,
+    dislikedTopics,
+    filters,
+    searchQuery,
+  } = req.body || {};
+  res.json(
+    await getRecommendedInternships(
+      resumeSkills,
+      resumeTechnologies,
+      resumeDomains,
+      dislikedTopics,
+      filters,
+      searchQuery,
+    ),
+  );
 });
 
-router.post("/internships/:id/save", (req, res) => {
-  toggleSaveInternship(req.params.id);
+router.post("/internships/:id/save", async (req, res) => {
+  await toggleSaveInternship(req.params.id);
   res.status(204).send();
 });
 
-router.post("/internships/:id/rate", (req, res) => {
-  rateInternship(req.params.id, req.body.rating);
-  res.status(204).send();
-});
-
-module.exports = router;
+export default router;

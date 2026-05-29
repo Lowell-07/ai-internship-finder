@@ -1,13 +1,13 @@
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 
-router.get("/health", (_req, res) => {
+router.get("/health", (req, res) => {
   res.json({
     status: "ok",
-    service: "ai-internship-finder-backend",
+    uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
 });
 
-module.exports = router;
+export default router;

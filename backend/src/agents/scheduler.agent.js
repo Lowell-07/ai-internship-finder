@@ -1,13 +1,11 @@
-const cron = require("node-cron");
-const env = require("../configs/env");
-const { refreshLinkedInAgent } = require("../services/agent.service");
-const { log } = require("../utils/logger");
+import cron from "node-cron";
+import env from "../configs/env.js";
+import { refreshLinkedInAgent } from "../services/agent.service.js";
+import { log } from "../utils/logger.js";
 
-function startScheduler() {
+export function startScheduler() {
   cron.schedule(env.agentSchedule, async () => {
     log("info", "agent.scheduler.tick");
     await refreshLinkedInAgent();
   });
 }
-
-module.exports = { startScheduler };

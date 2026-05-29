@@ -1,15 +1,15 @@
-const express = require("express");
-const { getAgentStatus, triggerAgentRun } = require("../services/agent.service");
+import express from "express";
+import { getAgentStatus, triggerAgentRun } from "../services/agent.service.js";
 
 const router = express.Router();
 
-router.get("/agents/status", (_req, res) => {
+router.get("/agent/status", (req, res) => {
   res.json(getAgentStatus());
 });
 
-router.post("/agents/:agentId/run", async (req, res) => {
-  await triggerAgentRun(req.params.agentId);
-  res.status(204).send();
+router.post("/agent/run", async (req, res) => {
+  const result = await triggerAgentRun();
+  res.json(result);
 });
 
-module.exports = router;
+export default router;

@@ -1,12 +1,111 @@
-const { getSeedInternships } = require("../services/state.service");
+import { Internship } from "../models/internship.model.js";
 
 async function collectInternships() {
-  const internships = getSeedInternships();
+  const seedInternships = [
+    {
+      title: "AI Research Intern",
+      company: "OpenAI",
+      companyLogo: "https://cdn-icons-png.flaticon.com/512/12220/12220289.png",
+      location: "Remote",
+      workMode: "remote",
+      duration: "6 Months",
+      salary: "$8,000/mo",
+      description:
+        "Work on evaluation, tooling, and model iteration for language systems.",
+      requirements: ["Python", "PyTorch", "Research"],
+      skills: ["Python", "PyTorch", "Transformers"],
+      postedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      applicantsCount: 18,
+      source: "Company Page",
+      url: "#",
+      relevanceScore: 0.96,
+      explanation: "Strong match for ML-focused resumes.",
+      saved: false,
+    },
+    {
+      title: "Frontend Engineering Intern",
+      company: "Vercel",
+      companyLogo: "https://cdn-icons-png.flaticon.com/512/5968/5968672.png",
+      location: "San Francisco, US",
+      workMode: "hybrid",
+      duration: "16 Weeks",
+      salary: "$7,500/mo",
+      description:
+        "Build developer-facing UI and platform features with Next.js.",
+      requirements: ["Next.js", "TypeScript", "React"],
+      skills: ["Next.js", "TypeScript", "React", "Tailwind"],
+      postedAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+      applicantsCount: 24,
+      source: "LinkedIn",
+      url: "#",
+      relevanceScore: 0.9,
+      explanation: "High fit for frontend-heavy resumes.",
+      saved: false,
+    },
+    {
+      title: "Product Design Intern",
+      company: "Airbnb",
+      companyLogo: "https://cdn-icons-png.flaticon.com/512/2111/2111320.png",
+      location: "Remote",
+      workMode: "remote",
+      duration: "12 Weeks",
+      salary: "$3,000/mo",
+      description: "Contribute to design systems and booking flows.",
+      requirements: ["Figma", "Design Systems", "Research"],
+      skills: ["Figma", "Research", "Design Systems"],
+      postedAt: new Date(Date.now() - 8 * 60 * 60 * 1000),
+      applicantsCount: 11,
+      source: "Wellfound",
+      url: "#",
+      relevanceScore: 0.88,
+      explanation: "Strong fit for design resumes.",
+      saved: false,
+    },
+    {
+      title: "MLOps Intern",
+      company: "Databricks",
+      companyLogo: "https://cdn-icons-png.flaticon.com/512/5968/5968520.png",
+      location: "San Francisco, US",
+      workMode: "hybrid",
+      duration: "12 Weeks",
+      salary: "$6,500/mo",
+      description:
+        "Ship model pipelines, feature stores, and deployment automation.",
+      requirements: ["Python", "Kubernetes", "MLflow"],
+      skills: ["Python", "Kubernetes", "Airflow", "MLflow"],
+      postedAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
+      applicantsCount: 9,
+      source: "Company Page",
+      url: "#",
+      relevanceScore: 0.84,
+      explanation: "Pipeline and infra alignment.",
+      saved: false,
+    },
+    {
+      title: "Data Science Intern",
+      company: "Netflix",
+      companyLogo: "https://cdn-icons-png.flaticon.com/5122/5977/5977590.png",
+      location: "Los Gatos, US",
+      workMode: "hybrid",
+      duration: "12 Weeks",
+      salary: "$6,800/mo",
+      description: "Analyze experimentation and recommendation signals.",
+      requirements: ["Python", "SQL", "Statistics"],
+      skills: ["Python", "SQL", "Pandas", "Statistics"],
+      postedAt: new Date(Date.now() - 20 * 60 * 60 * 1000),
+      applicantsCount: 16,
+      source: "LinkedIn",
+      url: "#",
+      relevanceScore: 0.8,
+      explanation: "Good fit for analytics-oriented candidates.",
+      saved: false,
+    },
+  ];
 
-  return internships.map((item, index) => ({
+  return seedInternships.map((item, index) => ({
     ...item,
     applicantsCount: Math.max(1, item.applicantsCount - (index % 3)),
   }));
 }
 
-module.exports = { collectInternships };
+export { collectInternships };

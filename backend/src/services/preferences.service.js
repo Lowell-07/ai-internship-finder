@@ -1,10 +1,10 @@
-const { getState } = require("./state.service");
+import { getState } from "./state.service.js";
 
-function getPreferences() {
+export function getPreferences() {
   return { preferences: getState().preferences };
 }
 
-function updatePreferences(payload) {
+export function updatePreferences(payload) {
   const current = getState().preferences;
 
   current.workMode = payload.work_mode || current.workMode;
@@ -17,8 +17,3 @@ function updatePreferences(payload) {
 
   return { preferences: current };
 }
-
-module.exports = {
-  getPreferences,
-  updatePreferences,
-};

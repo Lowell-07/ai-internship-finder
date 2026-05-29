@@ -1,6 +1,6 @@
-const env = require("../configs/env");
+import env from "../configs/env.js";
 
-function log(level, message, meta) {
+export function log(level, message, meta) {
   const entry = {
     timestamp: new Date().toISOString(),
     level,
@@ -12,5 +12,3 @@ function log(level, message, meta) {
     console.log(JSON.stringify(entry));
   }
 }
-
-module.exports = { log };

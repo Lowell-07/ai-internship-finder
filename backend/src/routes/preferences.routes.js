@@ -1,5 +1,8 @@
-const express = require("express");
-const { getPreferences, updatePreferences } = require("../services/preferences.service");
+import express from "express";
+import {
+  getPreferences,
+  updatePreferences,
+} from "../services/preferences.service.js";
 
 const router = express.Router();
 
@@ -11,4 +14,4 @@ router.patch("/preferences", (req, res) => {
   res.json(updatePreferences(req.body));
 });
 
-module.exports = router;
+export default router;
