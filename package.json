@@ -1,0 +1,12 @@
+{
+  "name": "ai-internship-finder-workspace",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build": "npm --prefix frontend run build && npm --prefix backend run build",
+    "lint": "npm --prefix frontend run lint",
+    "start:frontend": "npm --prefix frontend run start",
+    "start:backend": "npm --prefix backend run start"
+  }
+}

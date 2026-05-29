@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Hanken Grotesk', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background-color: #fbf9f8;
+    color: #1b1c1c;
+    min-height: 100dvh;
+  }
+  .dark body {
+    background-color: #1b1c1c;
+    color: #fbf9f8;
+  }
+}
+
+@layer components {
+  .resume-shadow {
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .btn-primary {
+    @apply bg-primary text-on-primary font-headline-sm text-headline-sm rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all active:scale-[0.98];
+  }
+  .card-hover {
+    @apply border border-transparent hover:border-primary transition-all cursor-pointer;
+  }
+  .chip {
+    @apply px-2 py-0.5 rounded-full text-label-sm font-semibold;
+  }
+}
